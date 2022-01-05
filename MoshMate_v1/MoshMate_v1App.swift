@@ -13,15 +13,22 @@ struct MoshMate_v1App: App {
         WindowGroup {
             TabView {
                 NavigationView{
+                    StackedView()
+                }
+                .tabItem{
+                    Image(systemName: "location.north.line.fill")
+                    Text("Stacked View")
+                }
+                    
+                NavigationView{
                     FindView()
                 }
                 .tabItem {
                     Image(systemName: "star.fill")
                     Text("Find My Mate")
                 }
-            
                 NavigationView{
-                    LocationView()
+                    MapView()
                 }
                 .tabItem{
                     Image(systemName: "airplane.circle.fill")

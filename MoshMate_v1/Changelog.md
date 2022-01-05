@@ -19,6 +19,13 @@ Deleted FindViewModel as changes are implemented in LocationViewModel
 - Refactor location manager to its own class
 - Need to figure out how to broadcast currentLocation 
 
+05/01/22
+
+Refactored code, Location Manager now its own class. Separate views. ViewModels not needed anymore.
+
+- Figure out how to connect with another user and have their location broadcasted to you
+
+
 
 # Required features
 

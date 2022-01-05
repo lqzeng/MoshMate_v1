@@ -11,9 +11,10 @@
 		B35872172782E366003F73FB /* FindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35872162782E366003F73FB /* FindView.swift */; };
 		B35872192782E367003F73FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B35872182782E367003F73FB /* Assets.xcassets */; };
 		B358721C2782E367003F73FB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B358721B2782E367003F73FB /* Preview Assets.xcassets */; };
-		B35872232782E3A0003F73FB /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35872222782E3A0003F73FB /* LocationView.swift */; };
-		B35E21CB2782F7FB00E2FBB6 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35E21CA2782F7FB00E2FBB6 /* LocationViewModel.swift */; };
 		B35E21D32785534C00E2FBB6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35E21D22785534C00E2FBB6 /* LocationManager.swift */; };
+		B35E21DB27855F7100E2FBB6 /* MKCoordinateRegionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35E21DA27855F7100E2FBB6 /* MKCoordinateRegionExtensions.swift */; };
+		B3B66D9327857632001FC7F8 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B66D9227857632001FC7F8 /* MapView.swift */; };
+		B3B66D9527857A06001FC7F8 /* StackedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B66D9427857A06001FC7F8 /* StackedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,10 +23,11 @@
 		B35872162782E366003F73FB /* FindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindView.swift; sourceTree = "<group>"; };
 		B35872182782E367003F73FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B358721B2782E367003F73FB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B35872222782E3A0003F73FB /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
-		B35E21CA2782F7FB00E2FBB6 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		B35E21CE2783FFB500E2FBB6 /* Changelog.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Changelog.md; sourceTree = "<group>"; };
 		B35E21D22785534C00E2FBB6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		B35E21DA27855F7100E2FBB6 /* MKCoordinateRegionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegionExtensions.swift; sourceTree = "<group>"; };
+		B3B66D9227857632001FC7F8 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		B3B66D9427857A06001FC7F8 /* StackedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +60,9 @@
 		B35872132782E366003F73FB /* MoshMate_v1 */ = {
 			isa = PBXGroup;
 			children = (
+				B35E21D927855F6300E2FBB6 /* Extensions */,
 				B35E21D1278551DA00E2FBB6 /* Managers */,
 				B35872142782E366003F73FB /* MoshMate_v1App.swift */,
-				B35E21D02784069700E2FBB6 /* ViewModels */,
 				B35E21CF2784068C00E2FBB6 /* Views */,
 				B35872182782E367003F73FB /* Assets.xcassets */,
 				B358721A2782E367003F73FB /* Preview Content */,
@@ -81,17 +83,10 @@
 			isa = PBXGroup;
 			children = (
 				B35872162782E366003F73FB /* FindView.swift */,
-				B35872222782E3A0003F73FB /* LocationView.swift */,
+				B3B66D9227857632001FC7F8 /* MapView.swift */,
+				B3B66D9427857A06001FC7F8 /* StackedView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		B35E21D02784069700E2FBB6 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				B35E21CA2782F7FB00E2FBB6 /* LocationViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B35E21D1278551DA00E2FBB6 /* Managers */ = {
@@ -100,6 +95,14 @@
 				B35E21D22785534C00E2FBB6 /* LocationManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		B35E21D927855F6300E2FBB6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B35E21DA27855F7100E2FBB6 /* MKCoordinateRegionExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,11 +175,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3B66D9527857A06001FC7F8 /* StackedView.swift in Sources */,
 				B35872172782E366003F73FB /* FindView.swift in Sources */,
-				B35872232782E3A0003F73FB /* LocationView.swift in Sources */,
+				B35E21DB27855F7100E2FBB6 /* MKCoordinateRegionExtensions.swift in Sources */,
+				B3B66D9327857632001FC7F8 /* MapView.swift in Sources */,
 				B35E21D32785534C00E2FBB6 /* LocationManager.swift in Sources */,
 				B35872152782E366003F73FB /* MoshMate_v1App.swift in Sources */,
-				B35E21CB2782F7FB00E2FBB6 /* LocationViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +314,10 @@
 				DEVELOPMENT_TEAM = JHVZLAV48H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs location to find your mate.";
+				INFOPLIST_FILE = "MoshMate-v1-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs location.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -340,7 +347,10 @@
 				DEVELOPMENT_TEAM = JHVZLAV48H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs location to find your mate.";
+				INFOPLIST_FILE = "MoshMate-v1-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs location.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

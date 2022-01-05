@@ -10,27 +10,31 @@ import MapKit
 
 struct FindView: View {
     
-    @ObservedObject private var viewModel = LocationViewModel()
+    // anytime locationManager is  updated, the body will be re-rendered
+    @ObservedObject private var locationManager = LocationManager()
     
     var body: some View {
         
-//        let location1 = CLLocationCoordinate2D(latitude: (viewModel.currentLocation?.coordinate.latitude)!, longitude: (viewModel.currentLocation?.coordinate.longitude)!)
-
-        let distance : Int = Int(viewModel.returnDistance(location1: viewModel.getUserCoordinates(), location2: viewModel.getTargetCoordinates()))
-
-
-        let orientation: Double = viewModel.doComputeAngleBetweenMapPoints(fromHeading: viewModel.degrees, viewModel.getUserCoordinates(), viewModel.getTargetCoordinates())
-
+        let userCoordinates = self.locationManager.location != nil ?
+            self.locationManager.location!.coordinate :
+            CLLocationCoordinate2D()
+        
+        let distance = locationManager.returnDistance(location1: userCoordinates, location2: locationManager.getTargetCoordinates())
+        
+        let orientation: Double = locationManager.doComputeAngleBetweenMapPoints(fromHeading: locationManager.degrees, userCoordinates, locationManager.getTargetCoordinates())
+        
         ScrollView {
-            Text("Distance to target: ")
-                .font(.title)
-            Text("\(distance) metres")
-                .padding(.bottom)
-            Text("Orientation to target:")
-                .font(.title)
-            Text("\(orientation) degrees")
+            Text("User Coordinates: \(userCoordinates.latitude), \(userCoordinates.longitude)")
+                .foregroundColor(Color.white)
+                .padding()
+                .background(Color.green)
+                .cornerRadius(10)
+            Text("Distance to Fawkner: \(distance) metres")
+                .padding()
+            Text("Orientation to Fawkner: \(orientation) degrees")
         }
     }
+    
 }
 
 struct FindView_Previews: PreviewProvider {
