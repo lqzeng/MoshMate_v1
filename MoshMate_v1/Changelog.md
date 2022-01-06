@@ -24,6 +24,8 @@ Deleted FindViewModel as changes are implemented in LocationViewModel
 Refactored code, Location Manager now its own class. Separate views. ViewModels not needed anymore.
 
 - Figure out how to connect with another user and have their location broadcasted to you
+- place pin to set target coordinates
+
 
 
 
@@ -42,3 +44,5 @@ Connection between two users, where location 2 is the target user
 # Future features
 Festivals can upload a map of their grounds which will be an overlay to the map.
 Battery saving so location only sent once per minute
+Broadcast which turns screen into beacon
+Logs need to be recorded somewhere

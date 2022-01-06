@@ -121,8 +121,11 @@ extension LocationManager: CLLocationManagerDelegate {
                 print("App location permission is denied")
             case .authorizedAlways, .authorizedWhenInUse:
                 self.locationManager.startUpdatingLocation()
-                self.locationManager.startUpdatingHeading()
-                print("Authorised. Location and Heading Updating")
+                if CLLocationManager.headingAvailable() {
+                    self.locationManager.startUpdatingHeading()
+                } else { print("Heading not available.") }
+                
+                
             @unknown default:
                 break
                 
