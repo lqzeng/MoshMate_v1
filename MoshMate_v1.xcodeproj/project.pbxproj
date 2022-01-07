@@ -16,6 +16,7 @@
 		B3B66D9327857632001FC7F8 /* MapUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B66D9227857632001FC7F8 /* MapUIView.swift */; };
 		B3B66D9527857A06001FC7F8 /* StackedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B66D9427857A06001FC7F8 /* StackedView.swift */; };
 		B3B66DA02786AF33001FC7F8 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B66D9F2786AF33001FC7F8 /* MapView.swift */; };
+		B3B66DA527880BC5001FC7F8 /* LocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B66DA427880BC5001FC7F8 /* LocationInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		B3B66D9227857632001FC7F8 /* MapUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapUIView.swift; sourceTree = "<group>"; };
 		B3B66D9427857A06001FC7F8 /* StackedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedView.swift; sourceTree = "<group>"; };
 		B3B66D9F2786AF33001FC7F8 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		B3B66DA427880BC5001FC7F8 /* LocationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		B35872132782E366003F73FB /* MoshMate_v1 */ = {
 			isa = PBXGroup;
 			children = (
+				B3B66DA327880BA0001FC7F8 /* Model */,
 				B35E21D927855F6300E2FBB6 /* Extensions */,
 				B35E21D1278551DA00E2FBB6 /* Managers */,
 				B35872142782E366003F73FB /* MoshMate_v1App.swift */,
@@ -106,6 +109,14 @@
 				B35E21DA27855F7100E2FBB6 /* MKCoordinateRegionExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B3B66DA327880BA0001FC7F8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B3B66DA427880BC5001FC7F8 /* LocationInfo.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +191,7 @@
 			files = (
 				B3B66D9527857A06001FC7F8 /* StackedView.swift in Sources */,
 				B3B66DA02786AF33001FC7F8 /* MapView.swift in Sources */,
+				B3B66DA527880BC5001FC7F8 /* LocationInfo.swift in Sources */,
 				B35872172782E366003F73FB /* FindView.swift in Sources */,
 				B35E21DB27855F7100E2FBB6 /* MKCoordinateRegionExtensions.swift in Sources */,
 				B3B66D9327857632001FC7F8 /* MapUIView.swift in Sources */,

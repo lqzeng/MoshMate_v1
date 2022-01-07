@@ -10,12 +10,15 @@ import SwiftUI
 
 struct MapUIView: UIViewRepresentable {
     
+    @EnvironmentObject var locationInfo: LocationInfo
     @State private var region = MKCoordinateRegion.defaultRegion
 
     @Binding var locationManager: CLLocationManager
     @Binding var degrees: Double?
     @Binding var currentLocation: CLLocation?
     @Binding var targetLocation: CLLocation?
+    
+    @State var counter = 0
     
     let mapView = MKMapView()
     
@@ -52,6 +55,7 @@ struct MapUIView: UIViewRepresentable {
     }
     
     func updateUIView(_ view: MKMapView, context: Context) {
+
 //        if annotations.count != view.annotations.count {
 //            print("inside updateUIView")
 //            view.removeAnnotations(view.annotations)
@@ -83,14 +87,25 @@ struct MapUIView: UIViewRepresentable {
             
             // only interested in the last location
             guard let location = locations.last else { return }
+            
+            // check if this var is needed
             parent.currentLocation = location
             
-            //print(parent.currentLocation ?? CLLocation(latitude: 0, longitude: 0))
+            parent.locationInfo.currentLocation = location
+            
+            // calculate distance
+            
+            parent.locationInfo.distance = returnDistance(location1: location, location2: parent.targetLocation ?? CLLocation(latitude: 0, longitude: 0))
+        
         }
         
         func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-            self.degrees = newHeading.magneticHeading
+            parent.degrees = newHeading.magneticHeading
             //print("updated heading")
+            
+            // calculate orientation
+            parent.locationInfo.orientation = doComputeAngleBetweenMapPoints(fromHeading: parent.degrees ?? 0.0, parent.currentLocation?.coordinate ?? CLLocationCoordinate2D(), parent.targetLocation?.coordinate ?? CLLocationCoordinate2D())
+
         }
         
         // check for changing of authorisation at any point
@@ -116,11 +131,11 @@ struct MapUIView: UIViewRepresentable {
         
         // functions to calculate distance and orientation
         
-        func returnDistance(location1: CLLocationCoordinate2D, location2: CLLocationCoordinate2D) -> Double{
-               let loc1: CLLocation = CLLocation(latitude: location1.latitude, longitude: location1.longitude)
-               let loc2: CLLocation = CLLocation(latitude: location2.latitude, longitude: location2.longitude)
-               
-               let distance: CLLocationDistance = loc1.distance(from: loc2)
+        func returnDistance(location1: CLLocation, location2: CLLocation) -> Double{
+//               let loc1: CLLocation = CLLocation(latitude: location1.latitude, longitude: location1.longitude)
+//               let loc2: CLLocation = CLLocation(latitude: location2.latitude, longitude: location2.longitude)
+//
+               let distance: CLLocationDistance = location1.distance(from: location2)
                return distance
         }
         
@@ -181,6 +196,7 @@ struct MapUIView: UIViewRepresentable {
                     
                     // apply this to the target location var
                     parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                    parent.locationInfo.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                     //print(parent.targetLocation?.coordinate ?? CLLocation(latitude: 0, longitude: 0))
                 }
             }

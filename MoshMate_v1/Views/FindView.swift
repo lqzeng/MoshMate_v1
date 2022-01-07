@@ -11,35 +11,39 @@ import MapKit
 struct FindView: View {
     
     // anytime locationManager is  updated, the body will be re-rendered
-    @ObservedObject private var locationManager = LocationManager()
-    @State var currentLocation = CLLocationCoordinate2D()
+//    @ObservedObject private var locationManager = LocationManager()
+//    @State var currentLocation = CLLocationCoordinate2D()
+    @EnvironmentObject var locationInfo: LocationInfo
     
     var body: some View {
         
-        let userCoordinates = self.locationManager.location != nil ?
-            self.locationManager.location!.coordinate :
-            CLLocationCoordinate2D()
-
-        let distance = locationManager.returnDistance(location1: userCoordinates, location2: locationManager.getTargetCoordinates())
-
-        let orientation: Double = locationManager.doComputeAngleBetweenMapPoints(fromHeading: locationManager.degrees, userCoordinates, locationManager.getTargetCoordinates())
-
-        ScrollView {
-            Text("User Coordinates: \(userCoordinates.latitude), \(userCoordinates.longitude)")
+        let distance = locationInfo.distance ?? 0.0
+        let orientation = locationInfo.orientation ?? 0.0
+        let currentLocation = locationInfo.currentLocation?.coordinate ?? CLLocationCoordinate2D()
+        //let targetLocation = locationInfo.targetLocation?.coordinate ?? CLLocationCoordinate2D()
+        
+        VStack {
+            Text("User: \(currentLocation.latitude), \(currentLocation.longitude)")
                 .foregroundColor(Color.white)
                 .padding()
                 .background(Color.green)
                 .cornerRadius(10)
-            Text("Distance to Fawkner: \(distance) metres")
+            
+            Text("Distance: \(distance) meters" as String)
                 .padding()
-            Text("Orientation to Fawkner: \(orientation) degrees")
+            
+            Text("Orientation: \(orientation) degrees" as String)
         }
+
+        
+//        let userCoordinates = self.locationManager.location != nil ?
+//            self.locationManager.location!.coordinate :
+//            CLLocationCoordinate2D()
+//
+//        let distance = locationManager.returnDistance(location1: userCoordinates, location2: locationManager.getTargetCoordinates())
+//
+//        let orientation: Double = locationManager.doComputeAngleBetweenMapPoints(fromHeading: locationManager.degrees, userCoordinates, locationManager.getTargetCoordinates())
+
     }
     
-}
-
-struct FindView_Previews: PreviewProvider {
-    static var previews: some View {
-        FindView()
-    }
 }

@@ -34,7 +34,7 @@ Refactored mapview into a MapUIView
 
 07/01/22
 added target pin
-- now trying to pass data between views
+added environment object LocationInfo to have global vars between views
 
 
 # Required features

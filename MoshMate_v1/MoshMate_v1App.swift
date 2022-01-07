@@ -11,24 +11,12 @@ import MapKit
 @main
 struct MoshMate_v1App: App {
     
+    @StateObject var locationInfo = LocationInfo()
+    
     var body: some Scene {
         WindowGroup {
             TabView {
-//                NavigationView{
-//                    StackedView()
-//                }
-//                .tabItem{
-//                    Image(systemName: "location.north.line.fill")
-//                    Text("Stacked View")
-//                }
-                    
-                NavigationView{
-                    FindView()
-                }
-                .tabItem {
-                    Image(systemName: "star.fill")
-                    Text("Find My Mate")
-                }
+                
                 NavigationView{
                     MapView()
                 }
@@ -36,7 +24,16 @@ struct MoshMate_v1App: App {
                     Image(systemName: "airplane.circle.fill")
                     Text("Locations")
                 }
+                    
+                NavigationView{
+                    FindView()
+                }
+                .tabItem {
+                    Image(systemName: "star.fill")
+                    Text("Find Target")
+                }
             }
+            .environmentObject(locationInfo)
         }
     }
 }

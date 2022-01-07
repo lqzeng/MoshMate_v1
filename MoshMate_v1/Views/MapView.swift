@@ -17,16 +17,17 @@ struct MapView: View {
     
         var body: some View {
             
-            let current = currentLocation?.coordinate
-            let target = targetLocation?.coordinate
+            
+//            let current = currentLocation?.coordinate
+//            let target = targetLocation?.coordinate
             
             VStack {
                 MapUIView(locationManager: $locationManager, degrees: $degrees, currentLocation: $currentLocation, targetLocation: $targetLocation)
-                    .ignoresSafeArea()
-                //Text("\(targetLocation ?? CLLocation(latitude: 0, longitude: 0))")
-                Text("CurrentLocation: \(current)" as String)
-                    .padding(.bottom)
-                Text("TargetLocation: \(target)" as String)
+                    .edgesIgnoringSafeArea(.top)
+
+//                Text("CurrentLocation: \(current)" as String)
+//                    .padding(.bottom)
+//                Text("TargetLocation: \(target)" as String)
             }
 
                 

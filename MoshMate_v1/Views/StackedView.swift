@@ -25,7 +25,7 @@ struct StackedView: View {
 //            MapUIView(selectedPlace: $selectedPlace, showingPlaceDetails: $showingPlaceDetails, annotations: locations)
 //                .ignoresSafeArea()
             
-            FindView()
+            //FindView()
             
         }
         
