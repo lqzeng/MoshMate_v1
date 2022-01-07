@@ -35,6 +35,7 @@ Refactored mapview into a MapUIView
 07/01/22
 added target pin
 added environment object LocationInfo to have global vars between views
+fixed region to be current location
 
 
 # Required features
