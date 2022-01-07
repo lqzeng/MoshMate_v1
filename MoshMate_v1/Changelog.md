@@ -32,6 +32,10 @@ branch feature/find-view-pin
 Refactored mapview into a MapUIView
 - need to figure out how to handle a logn press within the MapUIView so I can decode geolocation
 
+07/01/22
+added target pin
+- now trying to pass data between views
+
 
 # Required features
 
