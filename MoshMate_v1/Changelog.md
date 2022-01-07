@@ -26,7 +26,11 @@ Refactored code, Location Manager now its own class. Separate views. ViewModels 
 - Figure out how to connect with another user and have their location broadcasted to you
 - place pin to set target coordinates
 
+06/01/22
 
+branch feature/find-view-pin
+Refactored mapview into a MapUIView
+- need to figure out how to handle a logn press within the MapUIView so I can decode geolocation
 
 
 # Required features

@@ -5,6 +5,8 @@
 //  Created by Lucas Zeng on 5/1/2022.
 //
 
+// NO LONGER IN USE FOR REFERENCE ONLY 
+
 import Foundation
 import MapKit
 
@@ -26,7 +28,7 @@ class LocationManager: NSObject, ObservableObject {
         //self.locationManager.startUpdatingLocation()
         //self.locationManager.startUpdatingHeading()
         
-        print("Finished initialising Location Manager")
+        //print("Finished initialising Location Manager")
     }
     
 
@@ -87,6 +89,7 @@ class LocationManager: NSObject, ObservableObject {
     
 }
 
+// locationManager extension
 extension LocationManager: CLLocationManagerDelegate {
     
     // implement did update locations and update headings
@@ -95,9 +98,9 @@ extension LocationManager: CLLocationManagerDelegate {
         
         // only interested in the last location
         guard let location = locations.last else { return }
-        
         self.location = location
-        //print("updated location")
+        
+        
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
@@ -128,9 +131,9 @@ extension LocationManager: CLLocationManagerDelegate {
                 
             @unknown default:
                 break
-                
         }
     }
-    
 }
+
+
 

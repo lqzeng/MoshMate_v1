@@ -6,14 +6,27 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct StackedView: View {
+    
+    @ObservedObject private var locationManager = LocationManager()
+    
+    @State private var locations = [MKPointAnnotation]()
+    @State private var selectedPlace: MKPointAnnotation?
+    @State private var showingPlaceDetails = false
+    
     var body: some View {
        
         VStack{
-            MapView().frame(height: 300)
+            
+            //Instead of map this will be an arrow compass thing
+            
+//            MapUIView(selectedPlace: $selectedPlace, showingPlaceDetails: $showingPlaceDetails, annotations: locations)
+//                .ignoresSafeArea()
             
             FindView()
+            
         }
         
     }

@@ -6,19 +6,21 @@
 //
 
 import SwiftUI
+import MapKit
 
 @main
 struct MoshMate_v1App: App {
+    
     var body: some Scene {
         WindowGroup {
             TabView {
-                NavigationView{
-                    StackedView()
-                }
-                .tabItem{
-                    Image(systemName: "location.north.line.fill")
-                    Text("Stacked View")
-                }
+//                NavigationView{
+//                    StackedView()
+//                }
+//                .tabItem{
+//                    Image(systemName: "location.north.line.fill")
+//                    Text("Stacked View")
+//                }
                     
                 NavigationView{
                     FindView()
