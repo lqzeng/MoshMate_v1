@@ -11,7 +11,6 @@ import SwiftUI
 struct MapUIView: UIViewRepresentable {
     
     @EnvironmentObject var locationInfo: LocationInfo
-    @State private var region = MKCoordinateRegion.defaultRegion
 
     @Binding var locationManager: CLLocationManager
     @Binding var degrees: Double?
@@ -25,7 +24,6 @@ struct MapUIView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         
         mapView.showsUserLocation = true
-        mapView.setRegion(region, animated: false)
         
         // use this for gestures
         mapView.delegate = context.coordinator
@@ -88,6 +86,10 @@ struct MapUIView: UIViewRepresentable {
             // only interested in the last location
             guard let location = locations.last else { return }
             
+            // set region to current location
+            parent.mapView.setRegion(MKCoordinateRegion(center: location.coordinate,
+                                                        span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)), animated: false)
+            
             // check if this var is needed
             parent.currentLocation = location
             
@@ -129,11 +131,9 @@ struct MapUIView: UIViewRepresentable {
             }
         }
         
-        // functions to calculate distance and orientation
+        // --- functions to calculate distance and orientation ---
         
         func returnDistance(location1: CLLocation, location2: CLLocation) -> Double{
-//               let loc1: CLLocation = CLLocation(latitude: location1.latitude, longitude: location1.longitude)
-//               let loc2: CLLocation = CLLocation(latitude: location2.latitude, longitude: location2.longitude)
 //
                let distance: CLLocationDistance = location1.distance(from: location2)
                return distance
