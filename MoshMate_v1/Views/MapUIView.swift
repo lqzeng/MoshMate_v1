@@ -217,19 +217,22 @@ struct MapUIView: UIViewRepresentable {
             
             if gesture.state == .ended {
                 
-                addAnnotation(gesture: gesture)
-                
                 // run text alert to name location
                 //alert(gesture: gesture)
+                
+                addAnnotation(gesture: gesture)
+                
+
                     
             }
 
             
         }
         
-        @objc func handleTap(sender: UITapGestureRecognizer){
+        @objc func handleTap(gesture: UITapGestureRecognizer){
             
             // handle tap gesture
+            alert(gesture:gesture)
             
             
         }
@@ -244,8 +247,8 @@ struct MapUIView: UIViewRepresentable {
                 let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
-
-                annotation.title = "newLocation"
+                
+                annotation.title = parent.locationName
                 mapView.addAnnotation(annotation)
                 
                 //mapView.removeAnnotations(self.parent.mapView.annotations)
@@ -279,25 +282,25 @@ struct MapUIView: UIViewRepresentable {
             
             // update annotationInfo with title and coordinate to be added as annotation
             
-            if let mapView = gesture.view as? MKMapView {
-                let point = gesture.location(in: mapView)
-
-                let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinate
-                
-                annotation.title = parent.locationName
-                
-                
-                parent.locationInfo.annotationCoordinate = annotation.coordinate
-                parent.locationInfo.annotationTitle = annotation.title
-                
-                // set this to true which will trigger add annotation
-                //parent.addAnnotation = true
-                
-                
-                mapView.addAnnotation(annotation)
-            }
+//            if let mapView = gesture.view as? MKMapView {
+//                let point = gesture.location(in: mapView)
+//
+//                let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+//                let annotation = MKPointAnnotation()
+//                annotation.coordinate = coordinate
+//
+//                annotation.title = parent.locationName
+//
+//
+//                parent.locationInfo.annotationCoordinate = annotation.coordinate
+//                parent.locationInfo.annotationTitle = annotation.title
+//
+//                // set this to true which will trigger add annotation
+//                //parent.addAnnotation = true
+//
+//
+//                mapView.addAnnotation(annotation)
+//            }
             
             //alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in })
             
