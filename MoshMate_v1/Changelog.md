@@ -37,6 +37,16 @@ added target pin
 added environment object LocationInfo to have global vars between views
 fixed region to be current location
 
+08/01/22
+
+pin dropped with long press, select pin and make that target location implemented.
+problem with waitig for alert prompt to give name as this only runs after the handlePress func has been completed
+? on tap ask if you want to save a location, give it a name and icon on map
+
+remove passing in of variables to coordinator if not needed
+
+
+
 
 # Required features
 
@@ -54,4 +64,8 @@ Connection between two users, where location 2 is the target user
 Festivals can upload a map of their grounds which will be an overlay to the map.
 Battery saving so location only sent once per minute
 Broadcast which turns screen into beacon
+
+save location on map, and be able to name it eg. TENT
+- long press still target location and will still control the arrow
+
 Logs need to be recorded somewhere

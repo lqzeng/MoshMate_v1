@@ -11,34 +11,26 @@ import SwiftUI
 struct MapUIView: UIViewRepresentable {
     
     @EnvironmentObject var locationInfo: LocationInfo
+    //@EnvironmentObject var annotationInfo: AnnotationInfo
 
     @Binding var locationManager: CLLocationManager
     @Binding var degrees: Double?
     @Binding var currentLocation: CLLocation?
     @Binding var targetLocation: CLLocation?
     
-    @State var counter = 0
+    // vars for alert to name location
+    @Binding var showingAlert: Bool
+    @Binding var locationName: String
+    @Binding var addAnnotation: Bool
     
     let mapView = MKMapView()
+    
+    var hasSetRegion = false
     
     func makeUIView(context: Context) -> MKMapView {
         
         mapView.showsUserLocation = true
-        
-        // use this for gestures
         mapView.delegate = context.coordinator
-        
-        // LongPressGesture
-        let uilgr = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.addAnnotation(gesture:)))
-        uilgr.minimumPressDuration = 0.5
-
-        mapView.addGestureRecognizer(uilgr)
-        
-        // tapGesture
-        let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTap))
-        
-        tapGesture.delegate = context.coordinator
-        mapView.addGestureRecognizer(tapGesture)
         
         // location stuff
         locationManager.delegate = context.coordinator
@@ -48,6 +40,18 @@ struct MapUIView: UIViewRepresentable {
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestAlwaysAuthorization()
         
+        
+        // LongPressGesture
+        let uilgr = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handlePress(gesture:)))
+        uilgr.minimumPressDuration = 0.5
+
+        mapView.addGestureRecognizer(uilgr)
+        
+        // tapGesture
+        let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTap))
+        
+        tapGesture.delegate = context.coordinator
+        mapView.addGestureRecognizer(tapGesture)
         
         return mapView
     }
@@ -63,7 +67,7 @@ struct MapUIView: UIViewRepresentable {
 
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, degrees ?? 0.0, currentLocation, targetLocation)
+        Coordinator(self, degrees ?? 0.0, currentLocation, targetLocation, showingAlert)
     }
     
     class Coordinator: NSObject, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate {
@@ -72,33 +76,34 @@ struct MapUIView: UIViewRepresentable {
         var degrees: Double?
         var currentLocation: CLLocation?
         var targetLocation: CLLocation?
+        var showingAlert: Bool
         
-        init(_ parent: MapUIView, _ degrees: Double, _ currentLocation: CLLocation?, _ targetLocation: CLLocation?){
+        init(_ parent: MapUIView, _ degrees: Double, _ currentLocation: CLLocation?, _ targetLocation: CLLocation?, _ showingAlert: Bool){
             self.parent = parent
             self.degrees = degrees
             self.currentLocation = currentLocation
             self.targetLocation = targetLocation
+            self.showingAlert = showingAlert
         }
         
-        // location manager delegates
+        // --- location manager delegates ---
+        
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             
             // only interested in the last location
             guard let location = locations.last else { return }
             
-            // set region to current location
-            parent.mapView.setRegion(MKCoordinateRegion(center: location.coordinate,
-                                                        span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)), animated: false)
+            if !parent.hasSetRegion {
+                parent.mapView.region = MKCoordinateRegion(center: location.coordinate,
+                                                 span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+                parent.hasSetRegion = true
+            }
             
             // check if this var is needed
             parent.currentLocation = location
             
             parent.locationInfo.currentLocation = location
-            
-            // calculate distance
-            
-            parent.locationInfo.distance = returnDistance(location1: location, location2: parent.targetLocation ?? CLLocation(latitude: 0, longitude: 0))
-        
+                
         }
         
         func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
@@ -129,6 +134,35 @@ struct MapUIView: UIViewRepresentable {
                 @unknown default:
                     break
             }
+        }
+        
+        // --- annotationView delegates
+        
+        // delete if not used
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            // do something
+            return nil
+        }
+        
+        // delegate function to listen for annotation selection on map
+        
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+            
+            // select an annotation, then calculate the target distance
+                
+            let coordinate = view.annotation?.coordinate ?? CLLocationCoordinate2D()
+            
+
+            // set targetLocation to the selected annotation coordinates
+            parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            parent.locationInfo.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            
+            print("targetLocation changed")
+            
+            // calculate distance to target
+            
+            parent.locationInfo.distance = returnDistance(location1: parent.currentLocation ?? CLLocation(latitude: 0, longitude: 0), location2: parent.targetLocation ?? CLLocation(latitude: 0, longitude: 0))
+
         }
         
         // --- functions to calculate distance and orientation ---
@@ -174,39 +208,121 @@ struct MapUIView: UIViewRepresentable {
             if theta < 0 {
                 theta += 360
             }
-            //print(theta)
+            
             return theta
         }
         
-        // gesture recognisers
+        // --- gesture recognisers
         
-        @objc func addAnnotation(gesture: UIGestureRecognizer) {
-
-                if gesture.state == .ended {
-
+        @objc func handlePress(gesture: UIGestureRecognizer) {
+            
+            print("inside handlepress")
+            
+            let annotationName = parent.locationName
+            
+//            if gesture.state == .began {
+//
+//                showAlert(alert: alert())
+//            }
+                        
+            if gesture.state == .ended {
+                
+                parent.showingAlert = true
+                    
+                alert()
+                // need to wait for value on return here
+                
                 if let mapView = gesture.view as? MKMapView {
                     let point = gesture.location(in: mapView)
-                    
+
                     let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
                     let annotation = MKPointAnnotation()
                     annotation.coordinate = coordinate
-                    annotation.title = "TargetLocation"
-                    mapView.removeAnnotations(self.parent.mapView.annotations)
-                    mapView.addAnnotation(annotation)
-                    
-                    // apply this to the target location var
-                    parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-                    parent.locationInfo.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-                    //print(parent.targetLocation?.coordinate ?? CLLocation(latitude: 0, longitude: 0))
+
+                    if parent.addAnnotation {
+                        annotation.title = annotationName
+                        mapView.addAnnotation(annotation)
+                    }
+                    //mapView.removeAnnotations(self.parent.mapView.annotations)
+                    //mapView.addAnnotation(annotation)
+
                 }
             }
+            
         }
         
         @objc func handleTap(sender: UITapGestureRecognizer){
-            print("tap gesture recognised")
+            
+            // handle tap gesture
+            
+            
+        }
+        
+        private func alert() {
+            
+            let alert = UIAlertController(title: "Enter a location name: ", message: "", preferredStyle: .alert)
+            alert.addTextField() { textField in
+                textField.placeholder = "Enter some text"
+                textField.keyboardType = UIKeyboardType.asciiCapable
+            }
+            
+            alert.addAction(UIAlertAction(title: "Save", style: .default) { action in
+                if let textField = alert.textFields?[0], let text = textField.text {
+                    // do something with text
+                    self.parent.locationName = text
+                    //parent.locationName = text
+                } else {
+                    // Didn't get text
+                }
+            })
+            
+            //alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in })
+            showAlert(alert: alert)
+            
+            // now toggle off
+            //showingAlert = false
+        }
+
+        func showAlert(alert: UIAlertController) {
+            if let controller = topMostViewController() {
+                controller.present(alert, animated: true)
+            }
+        }
+
+        private func keyWindow() -> UIWindow? {
+            return UIApplication.shared.connectedScenes
+            .filter {$0.activationState == .foregroundActive}
+            .compactMap {$0 as? UIWindowScene}
+            .first?.windows.filter {$0.isKeyWindow}.first
+        }
+
+        private func topMostViewController() -> UIViewController? {
+            guard let rootController = keyWindow()?.rootViewController else {
+                return nil
+            }
+            return topMostViewController(for: rootController)
+        }
+
+        private func topMostViewController(for controller: UIViewController) -> UIViewController {
+            if let presentedController = controller.presentedViewController {
+                return topMostViewController(for: presentedController)
+            } else if let navigationController = controller as? UINavigationController {
+                guard let topController = navigationController.topViewController else {
+                    return navigationController
+                }
+                return topMostViewController(for: topController)
+            } else if let tabController = controller as? UITabBarController {
+                guard let topController = tabController.selectedViewController else {
+                    return tabController
+                }
+                return topMostViewController(for: topController)
+            }
+            return controller
         }
         
         
     }
+    
+
     
 }

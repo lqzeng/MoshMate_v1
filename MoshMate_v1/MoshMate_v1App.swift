@@ -12,6 +12,7 @@ import MapKit
 struct MoshMate_v1App: App {
     
     @StateObject var locationInfo = LocationInfo()
+    @StateObject var annotationInfo = AnnotationInfo()
     
     var body: some Scene {
         WindowGroup {
@@ -34,6 +35,7 @@ struct MoshMate_v1App: App {
                 }
             }
             .environmentObject(locationInfo)
+            //.environmentObject(annotationInfo)
         }
     }
 }

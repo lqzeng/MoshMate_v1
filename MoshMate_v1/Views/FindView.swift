@@ -23,6 +23,12 @@ struct FindView: View {
         //let targetLocation = locationInfo.targetLocation?.coordinate ?? CLLocationCoordinate2D()
         
         VStack {
+            
+            Capsule()
+                .frame(width: 5,
+                       height: 50)
+                .padding()
+            
             Text("User: \(currentLocation.latitude), \(currentLocation.longitude)")
                 .foregroundColor(Color.white)
                 .padding()
@@ -34,15 +40,6 @@ struct FindView: View {
             
             Text("Orientation: \(orientation) degrees" as String)
         }
-
-        
-//        let userCoordinates = self.locationManager.location != nil ?
-//            self.locationManager.location!.coordinate :
-//            CLLocationCoordinate2D()
-//
-//        let distance = locationManager.returnDistance(location1: userCoordinates, location2: locationManager.getTargetCoordinates())
-//
-//        let orientation: Double = locationManager.doComputeAngleBetweenMapPoints(fromHeading: locationManager.degrees, userCoordinates, locationManager.getTargetCoordinates())
 
     }
     
