@@ -39,6 +39,8 @@ struct FindView: View {
                 .padding()
             
             Text("Orientation: \(orientation) degrees" as String)
+            
+            //Text("AnnotationInfo: \(title)")
         }
 
     }

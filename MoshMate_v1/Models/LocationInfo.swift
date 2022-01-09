@@ -16,8 +16,11 @@ class LocationInfo: ObservableObject {
     @Published var degrees: Double? = 0.0
     @Published var distance: Double? = 0.0
     @Published var orientation: Double? = 0.0
+    @Published var annotationTitle: String?
+    @Published var annotationCoordinate:CLLocationCoordinate2D
     
     init() {
         print("initialising LocationInfo object")
+        self.annotationCoordinate = CLLocationCoordinate2D()
     }
 }

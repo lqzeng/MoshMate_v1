@@ -43,9 +43,10 @@ pin dropped with long press, select pin and make that target location implemente
 problem with waitig for alert prompt to give name as this only runs after the handlePress func has been completed
 ? on tap ask if you want to save a location, give it a name and icon on map
 
+09/01/22
+
 remove passing in of variables to coordinator if not needed
-
-
+not implementing name of pin just for now.
 
 
 # Required features

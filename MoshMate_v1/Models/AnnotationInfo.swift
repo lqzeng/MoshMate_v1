@@ -9,11 +9,8 @@ import UIKit
 import MapKit
 
 // add possibility for other stuff jsut in case
-class AnnotationInfo: ObservableObject{
+struct AnnotationInfo{
 
-    @Published var name: String = ""
-    
-    init() {
-        print("initialising AnnotationInfo object")
-    }
+    var title: String
+    var coordinate: CLLocationCoordinate2D
 }
