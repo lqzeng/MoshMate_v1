@@ -11,19 +11,10 @@ import SwiftUI
 struct MapUIView: UIViewRepresentable {
     
     @EnvironmentObject var locationInfo: LocationInfo
-    //@EnvironmentObject var annotationInfo: AnnotationInfo
-
     @Binding var locationManager: CLLocationManager
     @Binding var degrees: Double?
     @Binding var currentLocation: CLLocation?
     @Binding var targetLocation: CLLocation?
-    
-    // vars for alert to name location
-    @Binding var showingAlert: Bool
-    @Binding var locationName: String
-    @Binding var addAnnotation: Bool
-    
-    var annotationInfo = AnnotationInfo(title: "title", coordinate: CLLocationCoordinate2D())
     
     let mapView = MKMapView()
     
@@ -64,7 +55,7 @@ struct MapUIView: UIViewRepresentable {
     
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, degrees ?? 0.0, currentLocation, targetLocation, showingAlert)
+        Coordinator(self, degrees ?? 0.0, currentLocation, targetLocation)
     }
     
     class Coordinator: NSObject, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate {
@@ -73,14 +64,12 @@ struct MapUIView: UIViewRepresentable {
         var degrees: Double?
         var currentLocation: CLLocation?
         var targetLocation: CLLocation?
-        var showingAlert: Bool
         
-        init(_ parent: MapUIView, _ degrees: Double, _ currentLocation: CLLocation?, _ targetLocation: CLLocation?, _ showingAlert: Bool){
+        init(_ parent: MapUIView, _ degrees: Double, _ currentLocation: CLLocation?, _ targetLocation: CLLocation?){
             self.parent = parent
             self.degrees = degrees
             self.currentLocation = currentLocation
             self.targetLocation = targetLocation
-            self.showingAlert = showingAlert
         }
         
         // --- location manager delegates ---
@@ -218,138 +207,104 @@ struct MapUIView: UIViewRepresentable {
             if gesture.state == .ended {
                 
                 // run text alert to name location
-                //alert(gesture: gesture)
                 
-                addAnnotation(gesture: gesture)
-                
-
+                let mapView = gesture.view as? MKMapView
+                let point = gesture.location(in: mapView)
+                alertView(gesture: gesture, point: point)
                     
             }
-
             
         }
         
         @objc func handleTap(gesture: UITapGestureRecognizer){
             
             // handle tap gesture
-            alert(gesture:gesture)
+            //alert(gesture:gesture)
             
             
         }
         
-        func addAnnotation(gesture: UIGestureRecognizer)
+        func addAnnotation(gesture: UIGestureRecognizer, point: CGPoint, annName: String)
         {
             
-            // feed in information from handle press
             if let mapView = gesture.view as? MKMapView {
-                let point = gesture.location(in: mapView)
+                let point = point
 
                 let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
                 
-                annotation.title = parent.locationName
+                annotation.title = annName
                 mapView.addAnnotation(annotation)
+                
+                
                 
                 //mapView.removeAnnotations(self.parent.mapView.annotations)
                 //mapView.addAnnotation(annotation)
 
-                //parent.addAnnotation = false
             }
         }
-
         
-        private func alert(gesture:UIGestureRecognizer) {
+        func alertView(gesture: UIGestureRecognizer, point: CGPoint) {
+            let alert = UIAlertController(title: "Save Location", message: "Enter a Location Name", preferredStyle: .alert)
             
-            // this alert will throw a textbox up
-            
-            let alert = UIAlertController(title: "Enter a location name: ", message: "", preferredStyle: .alert)
-            alert.addTextField() { textField in
-                textField.placeholder = "Enter some text"
+            alert.addTextField { (textField) in
+                textField.placeholder = "Tent"
                 textField.keyboardType = UIKeyboardType.asciiCapable
             }
             
-            alert.addAction(UIAlertAction(title: "Save", style: .default) { action in
-                if let textField = alert.textFields?[0], let text = textField.text {
-                    // do something with text
-                    self.parent.locationName = text
-                } else {
-                    // Didn't get text
-                }
+            
+            // Action Buttons
+            
+            let save = UIAlertAction(title: "Save", style: .default) {
+                (_) in
+                
+                // save the annotation name and add the annotation
+                
+                let annName = alert.textFields![0].text!
+                
+                self.addAnnotation(gesture: gesture, point: point, annName: annName)
+                
+            }
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .destructive) {
+                (_) in
+                // do your own stuff
+            }
+            
+            // add into alertView
+            
+            alert.addAction(save)
+            alert.addAction(cancel)
+            
+            // presenting alertView
+            
+            UIApplication.shared.currentUIWindow()?.rootViewController?.present(alert, animated: true, completion: {
+                // do something here
+                
+                // see extension
+                
             })
             
-            showAlert(alert: alert)
-            
-            // update annotationInfo with title and coordinate to be added as annotation
-            
-//            if let mapView = gesture.view as? MKMapView {
-//                let point = gesture.location(in: mapView)
-//
-//                let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-//                let annotation = MKPointAnnotation()
-//                annotation.coordinate = coordinate
-//
-//                annotation.title = parent.locationName
-//
-//
-//                parent.locationInfo.annotationCoordinate = annotation.coordinate
-//                parent.locationInfo.annotationTitle = annotation.title
-//
-//                // set this to true which will trigger add annotation
-//                //parent.addAnnotation = true
-//
-//
-//                mapView.addAnnotation(annotation)
-//            }
-            
-            //alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in })
-            
-            
-            // now toggle off
-            //showingAlert = false
-            
-        }
-
-        func showAlert(alert: UIAlertController) {
-            if let controller = topMostViewController() {
-                controller.present(alert, animated: true)
-            }
-        }
-
-        private func keyWindow() -> UIWindow? {
-            return UIApplication.shared.connectedScenes
-            .filter {$0.activationState == .foregroundActive}
-            .compactMap {$0 as? UIWindowScene}
-            .first?.windows.filter {$0.isKeyWindow}.first
-        }
-
-        private func topMostViewController() -> UIViewController? {
-            guard let rootController = keyWindow()?.rootViewController else {
-                return nil
-            }
-            return topMostViewController(for: rootController)
-        }
-
-        private func topMostViewController(for controller: UIViewController) -> UIViewController {
-            if let presentedController = controller.presentedViewController {
-                return topMostViewController(for: presentedController)
-            } else if let navigationController = controller as? UINavigationController {
-                guard let topController = navigationController.topViewController else {
-                    return navigationController
-                }
-                return topMostViewController(for: topController)
-            } else if let tabController = controller as? UITabBarController {
-                guard let topController = tabController.selectedViewController else {
-                    return tabController
-                }
-                return topMostViewController(for: topController)
-            }
-            return controller
         }
         
         
     }
-    
 
     
+}
+
+public extension UIApplication {
+    func currentUIWindow() -> UIWindow? {
+        let connectedScenes = UIApplication.shared.connectedScenes
+            .filter({
+                $0.activationState == .foregroundActive})
+            .compactMap({$0 as? UIWindowScene})
+        
+        let window = connectedScenes.first?
+            .windows
+            .first { $0.isKeyWindow }
+
+        return window
+    }
 }

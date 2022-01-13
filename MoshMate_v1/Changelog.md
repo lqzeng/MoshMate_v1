@@ -48,6 +48,12 @@ problem with waitig for alert prompt to give name as this only runs after the ha
 remove passing in of variables to coordinator if not needed
 not implementing name of pin just for now.
 
+- Week of 10/01/22
+Back at work 
+Try and implement a new view where alert pops up and then function runs for annotations
+
+https://www.youtube.com/watch?v=vfWxwDfX30I
+
 
 # Required features
 
@@ -68,5 +74,9 @@ Broadcast which turns screen into beacon
 
 save location on map, and be able to name it eg. TENT
 - long press still target location and will still control the arrow
+
+Share markers with friends / markers are visible with people you share them with
+
+Friend location is an annotation so can select them for findview
 
 Logs need to be recorded somewhere

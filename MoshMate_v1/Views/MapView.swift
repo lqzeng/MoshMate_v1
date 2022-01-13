@@ -25,10 +25,6 @@ struct MapView: View {
     @State var targetLocation: CLLocation?
     
     @State var randomLocation = CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)
-    
-    @State var showingAlert: Bool = false
-    @State var locationName: String = ""
-    @State var addAnnotation: Bool = true
    
     var body: some View {
         
@@ -36,18 +32,13 @@ struct MapView: View {
 
         VStack {
             
-            MapUIView(locationManager: $locationManager, degrees: $degrees, currentLocation: $currentLocation, targetLocation: $targetLocation, showingAlert: self.$showingAlert, locationName: $locationName, addAnnotation: $addAnnotation)
+            MapUIView(locationManager: $locationManager, degrees: $degrees, currentLocation: $currentLocation, targetLocation: $targetLocation)
                 .edgesIgnoringSafeArea(.top)
-//                .onChange(of: addAnnotation) {
-//                    value in
-//                    guard value else {return} // if value of showingAlert is not true, then do nothing
-//                    print("insideOnChange")// code hits here if true
-
-                    // might need to set up thing here to add annotation
-
                 }
             
     }
+    
+
     
     
 }
