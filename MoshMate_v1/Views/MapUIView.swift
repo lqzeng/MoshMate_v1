@@ -135,9 +135,14 @@ struct MapUIView: UIViewRepresentable {
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             
             // select an annotation, then calculate the target distance
+            
+            //let annotation = view.annotation!
+            
+            // remove single or all of annotation
+            //mapView.removeAnnotations(self.parent.mapView.annotations)
+            //mapView.removeAnnotation(annotation)
                 
             let coordinate = view.annotation?.coordinate ?? CLLocationCoordinate2D()
-            
 
             // set targetLocation to the selected annotation coordinates
             parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
@@ -210,7 +215,7 @@ struct MapUIView: UIViewRepresentable {
                 
                 let mapView = gesture.view as? MKMapView
                 let point = gesture.location(in: mapView)
-                alertView(gesture: gesture, point: point)
+                alertViewAddAnnotation(gesture: gesture, point: point)
                     
             }
             
@@ -245,7 +250,7 @@ struct MapUIView: UIViewRepresentable {
             }
         }
         
-        func alertView(gesture: UIGestureRecognizer, point: CGPoint) {
+        func alertViewAddAnnotation(gesture: UIGestureRecognizer, point: CGPoint) {
             let alert = UIAlertController(title: "Save Location", message: "Enter a Location Name", preferredStyle: .alert)
             
             alert.addTextField { (textField) in

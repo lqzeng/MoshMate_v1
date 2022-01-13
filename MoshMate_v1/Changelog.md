@@ -52,6 +52,9 @@ not implementing name of pin just for now.
 Back at work 
 Try and implement a new view where alert pops up and then function runs for annotations
 
+13/01/22
+Added alert text view which passes into annotation title
+
 https://www.youtube.com/watch?v=vfWxwDfX30I
 
 
