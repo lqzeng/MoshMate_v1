@@ -54,6 +54,7 @@ Try and implement a new view where alert pops up and then function runs for anno
 
 13/01/22
 Added alert text view which passes into annotation title
+Added alert view which can remove or select annotation for find view
 
 https://www.youtube.com/watch?v=vfWxwDfX30I
 

@@ -13,12 +13,18 @@ struct MoshMate_v1App: App {
     
     @StateObject var locationInfo = LocationInfo()
     
+    @State var locationManager = CLLocationManager()
+    @State var degrees: Double?
+    @State var currentLocation: CLLocation?
+    @State var targetLocation: CLLocation?
+    
     var body: some Scene {
         WindowGroup {
             TabView {
                 
                 NavigationView{
-                    MapView()
+                    MapUIView(locationManager: $locationManager, degrees: $degrees, currentLocation: $currentLocation, targetLocation: $targetLocation)
+                        .edgesIgnoringSafeArea(.top)
                 }
                 .tabItem{
                     Image(systemName: "airplane.circle.fill")
@@ -34,7 +40,6 @@ struct MoshMate_v1App: App {
                 }
             }
             .environmentObject(locationInfo)
-            //.environmentObject(annotationInfo)
         }
     }
 }
