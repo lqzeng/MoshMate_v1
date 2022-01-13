@@ -134,25 +134,11 @@ struct MapUIView: UIViewRepresentable {
         
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             
-            // select an annotation, then calculate the target distance
+            // select an annotation, calculate the target distance or remove.
             
-            //let annotation = view.annotation!
+            let annotation = view.annotation!
             
-            // remove single or all of annotation
-            //mapView.removeAnnotations(self.parent.mapView.annotations)
-            //mapView.removeAnnotation(annotation)
-                
-            let coordinate = view.annotation?.coordinate ?? CLLocationCoordinate2D()
-
-            // set targetLocation to the selected annotation coordinates
-            parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            parent.locationInfo.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            
-            print("targetLocation changed")
-            
-            // calculate distance to target
-            
-            parent.locationInfo.distance = returnDistance(location1: parent.currentLocation ?? CLLocation(latitude: 0, longitude: 0), location2: parent.targetLocation ?? CLLocation(latitude: 0, longitude: 0))
+            alertViewSelectAnnotation(annotation: annotation, mapView: mapView, view: view)
 
         }
         
@@ -229,9 +215,10 @@ struct MapUIView: UIViewRepresentable {
             
         }
         
+        // --- functions to add and remove annotations
+        
         func addAnnotation(gesture: UIGestureRecognizer, point: CGPoint, annName: String)
         {
-            
             if let mapView = gesture.view as? MKMapView {
                 let point = point
 
@@ -241,14 +228,10 @@ struct MapUIView: UIViewRepresentable {
                 
                 annotation.title = annName
                 mapView.addAnnotation(annotation)
-                
-                
-                
-                //mapView.removeAnnotations(self.parent.mapView.annotations)
-                //mapView.addAnnotation(annotation)
-
             }
         }
+        
+        //alertView to add annotation
         
         func alertViewAddAnnotation(gesture: UIGestureRecognizer, point: CGPoint) {
             let alert = UIAlertController(title: "Save Location", message: "Enter a Location Name", preferredStyle: .alert)
@@ -280,6 +263,70 @@ struct MapUIView: UIViewRepresentable {
             // add into alertView
             
             alert.addAction(save)
+            alert.addAction(cancel)
+            
+            // presenting alertView
+            
+            UIApplication.shared.currentUIWindow()?.rootViewController?.present(alert, animated: true, completion: {
+                // do something here
+                
+                // see extension
+                
+            })
+            
+        }
+        
+        //alertView to calculate distance or remove annotation
+        
+        func alertViewSelectAnnotation(annotation: MKAnnotation, mapView: MKMapView, view: MKAnnotationView) {
+            
+            let annotation = annotation
+            let alert = UIAlertController(title: annotation.title!, message: "", preferredStyle: .alert)
+            
+            // Action Buttons
+            
+            let find = UIAlertAction(title: "Find", style: .default) {
+                (_) in
+                
+                // POSSIBLY RENDER FIND VIEW IN HERE
+                
+                // calculate the target distance
+                
+                let coordinate = view.annotation?.coordinate ?? CLLocationCoordinate2D()
+
+                // set targetLocation to the selected annotation coordinates
+                self.parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                self.parent.locationInfo.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                
+                print("targetLocation changed")
+                
+                // calculate distance to target
+                
+                self.parent.locationInfo.distance = self.returnDistance(location1: self.parent.currentLocation ?? CLLocation(latitude: 0, longitude: 0), location2: self.parent.targetLocation ?? CLLocation(latitude: 0, longitude: 0))
+                
+                
+            }
+            
+            let remove = UIAlertAction(title: "Remove", style: .default) {
+                (_) in
+                
+                // remove the annotation
+                
+                //mapView.removeAnnotations(self.parent.mapView.annotations)
+                mapView.removeAnnotation(annotation)
+                
+                
+            }
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .destructive) {
+                (_) in
+                // do nothing
+            }
+            
+            // add into alertView
+            
+            alert.addAction(find)
+            alert.addAction(remove)
             alert.addAction(cancel)
             
             // presenting alertView
