@@ -13,6 +13,8 @@ struct MapUIView: UIViewRepresentable {
     @EnvironmentObject var locationInfo: LocationInfo
     @Binding var locationManager: CLLocationManager
     @Binding var degrees: Double?
+    
+    // check if currentLocation is needed
     @Binding var currentLocation: CLLocation?
     @Binding var targetLocation: CLLocation?
     
@@ -91,6 +93,10 @@ struct MapUIView: UIViewRepresentable {
             parent.currentLocation = location
             
             parent.locationInfo.currentLocation = location
+            
+            // calculate distance to target
+            
+            self.parent.locationInfo.distance = self.returnDistance(location1: self.parent.currentLocation ?? CLLocation(latitude: 0, longitude: 0), location2: self.parent.targetLocation ?? CLLocation(latitude: 0, longitude: 0))
                 
         }
         
@@ -293,12 +299,10 @@ struct MapUIView: UIViewRepresentable {
                 self.parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                 self.parent.locationInfo.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                 
-                
                 // calculate distance to target
-                
+                               
                 self.parent.locationInfo.distance = self.returnDistance(location1: self.parent.currentLocation ?? CLLocation(latitude: 0, longitude: 0), location2: self.parent.targetLocation ?? CLLocation(latitude: 0, longitude: 0))
-                
-                
+                               
             }
             
             let remove = UIAlertAction(title: "Remove", style: .default) {
