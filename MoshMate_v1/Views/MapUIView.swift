@@ -182,12 +182,13 @@ struct MapUIView: UIViewRepresentable {
             _ fromPoint: CLLocationCoordinate2D,
             _ toPoint: CLLocationCoordinate2D
         ) -> CLLocationDirection {
+            
             let bearing = getBearing(point1: fromPoint, point2: toPoint)
             var theta = bearing - fromHeading
             if theta < 0 {
                 theta += 360
             }
-            
+
             return theta
         }
         
@@ -195,25 +196,17 @@ struct MapUIView: UIViewRepresentable {
         
         @objc func handlePress(gesture: UIGestureRecognizer) {
             
-            print("inside handlepress")
-            
             if gesture.state == .ended {
-                
-                // run text alert to name location
-                
+                // pass parameters to alertView and add annotation
                 let mapView = gesture.view as? MKMapView
                 let point = gesture.location(in: mapView)
                 alertViewAddAnnotation(gesture: gesture, point: point)
-                    
             }
-            
         }
         
         @objc func handleTap(gesture: UITapGestureRecognizer){
             
             // handle tap gesture
-            //alert(gesture:gesture)
-            
             
         }
         

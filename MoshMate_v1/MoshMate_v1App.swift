@@ -25,17 +25,19 @@ struct MoshMate_v1App: App {
             
             TabView(selection: $selectedTab) {
                 MapUIView(locationManager: $locationManager, degrees: $degrees, currentLocation: $currentLocation, targetLocation: $targetLocation, selectedTab: $selectedTab)
-                        .edgesIgnoringSafeArea(.top)
+                    .edgesIgnoringSafeArea(.top)
+                    //.ignoresSafeArea()
                     .tabItem {
                         Label("Locations", systemImage: "airplane.circle.fill")
                     }
                     .tag("One")
 
-                FindView()
+                FindView(selectedTab: $selectedTab)
                     .tabItem {
                         Label("Find My Mate", systemImage: "star.fill")
                     }
                     .tag("Two")
+
             }
             
 //            TabView {

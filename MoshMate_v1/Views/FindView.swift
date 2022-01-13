@@ -10,29 +10,34 @@ import MapKit
 
 struct FindView: View {
     
-    // anytime locationManager is  updated, the body will be re-rendered
-//    @ObservedObject private var locationManager = LocationManager()
-//    @State var currentLocation = CLLocationCoordinate2D()
     @EnvironmentObject var locationInfo: LocationInfo
+    
+    @Binding var selectedTab: String
     
     var body: some View {
         
         let distance = locationInfo.distance ?? 0.0
         let orientation = locationInfo.orientation ?? 0.0
         let currentLocation = locationInfo.currentLocation?.coordinate ?? CLLocationCoordinate2D()
-        //let targetLocation = locationInfo.targetLocation?.coordinate ?? CLLocationCoordinate2D()
+        
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
         
         VStack {
-            
-            Capsule()
-                .frame(width: 5,
-                       height: 50)
+            Arrow()
+                .stroke(lineWidth: 15)
+                .foregroundColor(.mint)
                 .padding()
+                .rotationEffect(.degrees(orientation))
+                .onChange(of: orientation) { orientation in
+                    if((orientation < 5 || orientation > 355) && selectedTab == "Two") {
+                        feedbackGenerator.impactOccurred()
+                    }
+                }
             
             Text("User: \(currentLocation.latitude), \(currentLocation.longitude)")
                 .foregroundColor(Color.white)
-                .padding()
-                .background(Color.green)
+                .padding(.top)
+                //.background(Color.green)
                 .cornerRadius(10)
             
             Text("Distance: \(distance) meters" as String)
@@ -40,9 +45,38 @@ struct FindView: View {
             
             Text("Orientation: \(orientation) degrees" as String)
             
-            //Text("AnnotationInfo: \(title)")
+            // stops bleed into tab bar
+            Rectangle()
+                 .frame(height: 0)
+                 .background(.thinMaterial)
         }
+        .background((orientation > 355 || orientation < 5) ? .green : .black)
 
     }
     
 }
+
+struct Arrow: Shape {
+    
+    func path(in rect: CGRect) -> Path {
+        Path { path in
+            let width = rect.width
+            let height = rect.height
+            
+            path.addLines( [
+                CGPoint(x: width * 0.4, y: height),
+                CGPoint(x: width * 0.4, y: height * 0.4),
+                CGPoint(x: width * 0.2, y: height * 0.4),
+                CGPoint(x: width * 0.5, y: height * 0.1),
+                CGPoint(x: width * 0.8, y: height * 0.4),
+                CGPoint(x: width * 0.6, y: height * 0.4),
+                CGPoint(x: width * 0.6, y: height)
+            ] )
+            
+            path.closeSubpath()
+        }
+    }
+}
+
+
+
