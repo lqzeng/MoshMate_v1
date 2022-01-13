@@ -27,7 +27,7 @@ struct MapUIView: UIViewRepresentable {
         mapView.showsUserLocation = true
         mapView.delegate = context.coordinator
         
-        // location stuff
+        // location manager
         locationManager.delegate = context.coordinator
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
@@ -273,9 +273,7 @@ struct MapUIView: UIViewRepresentable {
                 // do something here
                 
                 // see extension
-                
             })
-            
         }
         
         //alertView to calculate distance or remove annotation
@@ -290,17 +288,18 @@ struct MapUIView: UIViewRepresentable {
             let find = UIAlertAction(title: "Find", style: .default) {
                 (_) in
                 
-                // POSSIBLY RENDER FIND VIEW IN HERE
+                // transition to findView tab
+                
                 self.parent.selectedTab = "Two"
                 // calculate the target distance
                 
                 let coordinate = view.annotation?.coordinate ?? CLLocationCoordinate2D()
 
                 // set targetLocation to the selected annotation coordinates
+                
                 self.parent.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                 self.parent.locationInfo.targetLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                 
-                print("targetLocation changed")
                 
                 // calculate distance to target
                 
@@ -337,15 +336,11 @@ struct MapUIView: UIViewRepresentable {
                 // do something here
                 
                 // see extension
-                
             })
-            
         }
-        
         
     }
 
-    
 }
 
 public extension UIApplication {
