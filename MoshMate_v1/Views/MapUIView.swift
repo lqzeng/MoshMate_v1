@@ -16,6 +16,8 @@ struct MapUIView: UIViewRepresentable {
     @Binding var currentLocation: CLLocation?
     @Binding var targetLocation: CLLocation?
     
+    @Binding var selectedTab: String
+    
     let mapView = MKMapView()
     
     var hasSetRegion = false
@@ -289,7 +291,7 @@ struct MapUIView: UIViewRepresentable {
                 (_) in
                 
                 // POSSIBLY RENDER FIND VIEW IN HERE
-                
+                self.parent.selectedTab = "Two"
                 // calculate the target distance
                 
                 let coordinate = view.annotation?.coordinate ?? CLLocationCoordinate2D()
