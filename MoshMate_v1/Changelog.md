@@ -58,7 +58,8 @@ Added alert view which can remove or select annotation for find view
 Added transition between tabs
 Added arrow and haptic feedback
 
-https://www.youtube.com/watch?v=vfWxwDfX30I
+16/01/22
+Added rudimentary scrolling from FindView to MapView
 
 
 # Required features
@@ -77,6 +78,9 @@ Connection between two users, where location 2 is the target user
 Festivals can upload a map of their grounds which will be an overlay to the map.
 Battery saving so location only sent once per minute
 Broadcast which turns screen into beacon
+
+improve animated scrolling between views:
+https://www.youtube.com/watch?v=62u7s1Z3aSo
 
 save location on map, and be able to name it eg. TENT
 - long press still target location and will still control the arrow

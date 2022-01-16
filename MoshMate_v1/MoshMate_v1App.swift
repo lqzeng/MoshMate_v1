@@ -19,6 +19,7 @@ struct MoshMate_v1App: App {
     @State var targetLocation: CLLocation?
     
     @State var selectedTab = "One"
+    let minDragTranslationForSwipe: CGFloat = 50
     
     var body: some Scene {
         WindowGroup {
@@ -31,42 +32,27 @@ struct MoshMate_v1App: App {
                         Label("Locations", systemImage: "airplane.circle.fill")
                     }
                     .tag("One")
+                    .highPriorityGesture(DragGesture().onEnded({ self.handleSwipe(translation: $0.translation.width)}))
 
                 FindView(selectedTab: $selectedTab)
                     .tabItem {
                         Label("Find My Mate", systemImage: "star.fill")
                     }
                     .tag("Two")
+                    .highPriorityGesture(DragGesture().onEnded({ self.handleSwipe(translation: $0.translation.width)}))
 
             }
-            
-//            TabView {
-//
-//                NavigationView{
-//                    if !showFindView{
-//                        MapUIView(locationManager: $locationManager, degrees: $degrees, currentLocation: $currentLocation, targetLocation: $targetLocation, showFindView: $showFindView)
-//                            .edgesIgnoringSafeArea(.top)
-//                    }
-//                    else {
-//                        FindView()
-//                            .transition(.move(edge:.bottom))
-//                    }
-//
-//                }
-//                .tabItem{
-//                    Image(systemName: "airplane.circle.fill")
-//                    Text("Locations")
-//                }
-//
-//                NavigationView{
-//                    FindView()
-//                }
-//                .tabItem {
-//                    Image(systemName: "star.fill")
-//                    Text("Find Target")
-//                }
-//            }
             .environmentObject(locationInfo)
+        }
+    }
+    
+    private func handleSwipe(translation: CGFloat) {
+        // print(horizontal translation was \(translation)")
+        // no swiping from mapView
+        if translation > minDragTranslationForSwipe && selectedTab == "Two" {
+            selectedTab = "One"
+//        } else  if translation < -minDragTranslationForSwipe && selectedTab == "One" {
+//            selectedTab = "Two"
         }
     }
 }
