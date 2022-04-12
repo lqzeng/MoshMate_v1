@@ -1,4 +1,4 @@
-# MoshMate_v1
+# MoshMate
 
 This app is meant to help the user find points of interest on a map.
 
