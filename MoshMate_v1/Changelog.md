@@ -71,6 +71,8 @@ Backend
 Connection between two users, where location 2 is the target user
 - need to figure out how to share location with another user.
 - need to pass in location 2 lat and long into the find view model
+- look up Cloudkit
+https://www.youtube.com/watch?v=fTNPRhGGP-0
   
 
 

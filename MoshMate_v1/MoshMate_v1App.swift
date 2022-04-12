@@ -47,12 +47,10 @@ struct MoshMate_v1App: App {
     }
     
     private func handleSwipe(translation: CGFloat) {
-        // print(horizontal translation was \(translation)")
-        // no swiping from mapView
         if translation > minDragTranslationForSwipe && selectedTab == "Two" {
             selectedTab = "One"
-//        } else  if translation < -minDragTranslationForSwipe && selectedTab == "One" {
-//            selectedTab = "Two"
+            //  } else  if translation < -minDragTranslationForSwipe && selectedTab == "One" {
+            //  selectedTab = "Two"
         }
     }
 }
